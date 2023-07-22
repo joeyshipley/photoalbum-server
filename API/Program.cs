@@ -1,21 +1,12 @@
 using Microsoft.OpenApi.Models;
 using API.Infrastructure.IoC;
 using Data.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencyRegistrations();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// TODO: check into whether this is needed or even works
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)
-    )
-);
 
 builder.Services.AddSwaggerGen((c) =>
 {
@@ -25,6 +16,9 @@ builder.Services.AddSwaggerGen((c) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+var appContext = builder.Services.Resolve<IApplicationContext>();
+await appContext.Migrate();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

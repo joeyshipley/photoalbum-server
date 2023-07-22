@@ -24,6 +24,12 @@ public static class DependencyRegistrations
         return services;
     }
 
+    public static T Resolve<T>(this IServiceCollection services)
+    {
+        var provider = serviceProvider(services);
+        return (T) provider.GetService(typeof(T));
+    }
+
     public static T Resolve<T>()
     {
         return Resolve<T>(new List<Action<IServiceCollection>>());
@@ -33,12 +39,17 @@ public static class DependencyRegistrations
     {
         return (T) serviceProvider(registerResolverOverrides).GetService(typeof(T));
     }
-
+    
     private static IServiceProvider serviceProvider(List<Action<IServiceCollection>> registerResolverOverrides)
     {
         var services = new ServiceCollection();
         services.AddDependencyRegistrations();
         registerResolverOverrides.ForEach(register => register(services));
+        return serviceProvider(services);
+    }
+
+    private static IServiceProvider serviceProvider(IServiceCollection services)
+    {
         return services.BuildServiceProvider();
     }
 }

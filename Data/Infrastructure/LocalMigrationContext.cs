@@ -12,5 +12,5 @@ public class LocalMigrationContext : ApplicationContext
     }
 
     public LocalMigrationContext()
-        : base(null) {}
+        : base((ISettingsProvider) null) {}
 }
