@@ -26,7 +26,15 @@ private readonly IUrlProvider _urlProvider;
     public async Task<AlbumViewerCollectionResult> ViewAll(AlbumViewerCollectionRequest request)
     {
         var result = new AlbumViewerCollectionResult();
-        var url = _urlProvider.UserAlbumsUrl(request.UserId);
+
+        var requestErrors = request.Validate();
+        if(requestErrors.Any())
+        {
+            result.AddErrors(requestErrors);
+            return result;
+        }
+
+        var url = _urlProvider.UserManyAlbumsUrl(request.UserId);
         var response = await _apiCaller.GetAsync<List<AlbumEntry>>(url);
 
         if(!response.WasSuccessful())
@@ -42,7 +50,15 @@ private readonly IUrlProvider _urlProvider;
     public async Task<AlbumViewerResult> View(AlbumViewerRequest request)
     {
         var result = new AlbumViewerResult();
-        var url = _urlProvider.AlbumSingleUrl(request.Id);
+        
+        var requestErrors = request.Validate();
+        if(requestErrors.Any())
+        {
+            result.AddErrors(requestErrors);
+            return result;
+        }
+        
+        var url = _urlProvider.AlbumSingleUrl(request.AlbumId);
         var response = await _apiCaller.GetAsync<AlbumEntry>(url);
 
         if(!response.WasSuccessful())

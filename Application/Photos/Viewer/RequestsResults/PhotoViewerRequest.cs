@@ -1,6 +1,19 @@
-﻿namespace Application.Photos.Viewer.RequestsResults;
+﻿using Application.Infrastructure.RequestResponse;
 
-public class PhotoViewerRequest
+namespace Application.Photos.Viewer.RequestsResults;
+
+public class PhotoViewerRequest : IRequest
 {
-    public int Id { get; set; }
+    public int PhotoId { get; set; }
+
+    public List<(string Key, string ErrorMessage)> Validate()
+    {
+        var errors = new List<(string Key, string ErrorMessage)>();
+
+        if(PhotoId <= 0)
+            errors.Add((Key: "INVALID_PHOTO_ID", ErrorMessage: "PhotoId is Invalid."));
+
+        return errors;
+    }
+
 }

@@ -24,10 +24,10 @@ public class AlbumsController : ControllerBase
         return ResponseHelper.Respond(result);
     }
     
-    [HttpGet, Route("{id}")]
-    public async Task<JsonResult> View(int id)
+    [HttpGet, Route("{albumId}")]
+    public async Task<JsonResult> View(int albumId)
     {
-        var request = new AlbumViewerRequest { Id = id };
+        var request = new AlbumViewerRequest { AlbumId = albumId };
         var result = await _photoViewerService.View(request);
         return ResponseHelper.Respond(result);
     }

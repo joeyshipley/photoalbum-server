@@ -1,8 +1,8 @@
 ﻿using Application.Infrastructure.RequestResponse;
 
-namespace Application.Albums.Viewer.RequestsResults;
+namespace Application.Photos.Viewer.RequestsResults;
 
-public class AlbumViewerRequest : IRequest
+public class PhotoViewerCollectionRequest : IRequest
 {
     public int AlbumId { get; set; }
 
@@ -15,5 +15,4 @@ public class AlbumViewerRequest : IRequest
 
         return errors;
     }
-
 }

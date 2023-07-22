@@ -32,6 +32,21 @@ public class AlbumViewerServiceTests
     }
     
     [Test]
+    public async Task ViewAll_WhenInvalidRequest()
+    {
+        // Arrange
+        var request = new AlbumViewerCollectionRequest { UserId = 0 };
+
+        // Act
+        var result = await UnderTest.ViewAll(request);
+
+        // Assert
+        result.Albums.Count.Should().Be(0);
+        result.Errors.Count.Should().Be(1);
+        result.Errors.Any(x => x.Key == "INVALID_USER_ID").Should().BeTrue("INVALID_USER_ID error was not found.");
+    }
+        
+    [Test]
     public async Task ViewAll_WhenErrorReturnedFromApi()
     {
         // Arrange
@@ -57,29 +72,44 @@ public class AlbumViewerServiceTests
     public async Task View_WhenAllIsWell()
     {
         // Arrange
-        var photoId = 1001;
+        var albumId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
             .Setup(x => x.GetAsync<AlbumEntry>(It.IsAny<string>()))
             .ReturnsAsync(new ApiCallerResponse<AlbumEntry>
             {
-                Model = new AlbumEntry { Id = photoId },
+                Model = new AlbumEntry { Id = albumId },
             });
 
-        var request = new AlbumViewerRequest { Id = photoId };
+        var request = new AlbumViewerRequest { AlbumId = albumId };
 
         // Act
         var result = await UnderTest.View(request);
 
         // Assert
-        result.Album.Id.Should().Be(photoId);
+        result.Album.Id.Should().Be(albumId);
+    }
+
+    [Test]
+    public async Task View_WhenInvalidRequest()
+    {
+        // Arrange
+        var request = new AlbumViewerRequest { AlbumId = 0 };
+
+        // Act
+        var result = await UnderTest.View(request);
+
+        // Assert
+        result.Album.Should().BeNull();
+        result.Errors.Count.Should().Be(1);
+        result.Errors.Any(x => x.Key == "INVALID_ALBUM_ID").Should().BeTrue("INVALID_ALBUM_ID error was not found.");
     }
 
     [Test]
     public async Task View_WhenErrorReturnedFromApi()
     {
         // Arrange
-        var photoId = 1001;
+        var albumId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
             .Setup(x => x.GetAsync<AlbumEntry>(It.IsAny<string>()))
@@ -88,7 +118,7 @@ public class AlbumViewerServiceTests
                 Errors = new List<string> { "Nope!" }
             });
 
-        var request = new AlbumViewerRequest { Id = photoId };
+        var request = new AlbumViewerRequest { AlbumId = albumId };
 
         // Act
         var result = await UnderTest.View(request);

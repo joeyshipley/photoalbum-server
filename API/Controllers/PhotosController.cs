@@ -16,11 +16,19 @@ public class PhotosController : ControllerBase
         _photoViewerService = photoViewerService;
     }
     
-    [HttpGet, Route("{id}")]
-    public async Task<JsonResult> View(int id)
+    [HttpGet, Route("{photoId}")]
+    public async Task<JsonResult> View(int photoId)
     {
-        var request = new PhotoViewerRequest { Id = id };
+        var request = new PhotoViewerRequest { PhotoId = photoId };
         var result = await _photoViewerService.View(request);
+        return ResponseHelper.Respond(result);
+    }
+
+    [HttpGet, Route("album/{albumId}")]
+    public async Task<JsonResult> ViewAll(int albumId)
+    {
+        var request = new PhotoViewerCollectionRequest { AlbumId = albumId };
+        var result = await _photoViewerService.ViewForAlbum(request);
         return ResponseHelper.Respond(result);
     }
 }

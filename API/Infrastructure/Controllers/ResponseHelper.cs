@@ -25,8 +25,8 @@ public static class ResponseHelper
     public static JsonResult Fail(List<string> errors) => 
         Fail(HttpStatusCode.InternalServerError, errors);
 
-    public static JsonResult Fail(List<(string Key, string Text)> errors) => 
-        Fail(HttpStatusCode.InternalServerError, errors.Select(x => x.Text).ToList());
+    public static JsonResult Fail(List<(string Key, string ErrorMessage)> errors) => 
+        Fail(HttpStatusCode.InternalServerError, errors.Select(x => x.ErrorMessage).ToList());
 
     public static JsonResult Fail(HttpStatusCode statusCode, List<string> errors) => 
         new JsonResult(new { Errors = errors }) { StatusCode = (int) statusCode };
