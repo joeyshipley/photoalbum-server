@@ -5,7 +5,9 @@
 ##### Setup
 
 > Install SQL Server Express 2019
-``` https://www.microsoft.com/en-us/Download/details.aspx?id=101064 ```
+```
+> https://www.microsoft.com/en-us/Download/details.aspx?id=101064
+```
 
 > Create Database in SQL Server
 ``` LTPA_DEV ```
