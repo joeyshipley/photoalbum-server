@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Photos\Mutators\RequestsResults\" />
     <Folder Include="Photos\Viewer\RequestsResults\" />
   </ItemGroup>
 

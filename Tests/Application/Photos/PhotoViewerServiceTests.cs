@@ -31,6 +31,7 @@ public class PhotoViewerServiceTests
 
         // Assert
         result.Photos.Count.Should().Be(1);
+        result.Errors.Should().BeEmpty();
     }
     
     [Test]
@@ -90,6 +91,7 @@ public class PhotoViewerServiceTests
 
         // Assert
         result.Photo.Id.Should().Be(photoId);
+        result.Errors.Should().BeEmpty();
     }
     
     [Test]

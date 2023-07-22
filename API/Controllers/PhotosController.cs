@@ -1,7 +1,6 @@
 ﻿using API.Infrastructure.Controllers;
-using Application.Infrastructure.RequestResponse;
-using Application.Photos;
-using Application.Photos.Persistence;
+using Application.Photos.Mutators;
+using Application.Photos.Mutators.RequestsResults;
 using Application.Photos.Viewer;
 using Application.Photos.Viewer.RequestsResults;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +12,15 @@ namespace API.Controllers;
 public class PhotosController : ControllerBase
 {
     private readonly IPhotoViewerService _photoViewerService;
-    private readonly IPhotoRepository _photoRepository;
+    private readonly ILikePhotos _photosLikeService;
 
     public PhotosController(
         IPhotoViewerService photoViewerService,
-        IPhotoRepository photoRepository
+        ILikePhotos photosLikeService
     )
     {
         _photoViewerService = photoViewerService;
-        _photoRepository = photoRepository;
+        _photosLikeService = photosLikeService;
     }
     
     [HttpGet, Route("{photoId}")]
@@ -43,12 +42,8 @@ public class PhotosController : ControllerBase
     [HttpPost, Route("{photoId}/like")]
     public async Task<JsonResult> Like(int photoId)
     {
-        // TODO: PoC successful, implement in service.
-        var entity = await _photoRepository.Upsert(new PhotoDetailsEntity { PhotoId = photoId, Likes = 1 });
-        await _photoRepository.SaveChangesAsync();
-
-        var photo = await _photoRepository.Find(photoId);
-
-        return ResponseHelper.Respond(new ResultBase {});
+        var request = new LikeRequest { PhotoId = photoId };
+        var result = await _photosLikeService.Like(request);
+        return ResponseHelper.Respond(result);
     }
 }

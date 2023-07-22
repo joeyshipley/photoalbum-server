@@ -7,8 +7,15 @@ public class PhotoDetailsBuilder
 {
     private PhotoDetailsEntity _baseline;
     private DateTime? _createdOn;
+    private int? _id;
     private int? _photoId;
     private int? _likes;
+        
+    public PhotoDetailsBuilder WithId(int value)
+    {
+        _id = value;
+        return this;
+    }
 
     public PhotoDetailsBuilder WithLikes(int value)
     {
@@ -37,6 +44,9 @@ public class PhotoDetailsBuilder
 
     public PhotoDetailsEntity Build()
     {
+        if(_id.HasValue)
+            _baseline.Id = _id.Value;
+
         if(_photoId.HasValue)
             _baseline.PhotoId = _photoId.Value;
 

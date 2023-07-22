@@ -29,6 +29,7 @@ public class AlbumViewerServiceTests
 
         // Assert
         result.Albums.Count.Should().Be(1);
+        result.Errors.Should().BeEmpty();
     }
     
     [Test]
@@ -88,6 +89,7 @@ public class AlbumViewerServiceTests
 
         // Assert
         result.Album.Id.Should().Be(albumId);
+        result.Errors.Should().BeEmpty();
     }
 
     [Test]
