@@ -30,11 +30,6 @@ public class ApplicationContext : DbContext, IApplicationContext
     {
         PhotoDetailsModelBuilder.Configure(modelBuilder);
     }
-
-    public new Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return base.SaveChangesAsync(cancellationToken);
-    }
-
+    
     public DbSet<PhotoDetailsEntity> PhotoDetails => Set<PhotoDetailsEntity>();
 }

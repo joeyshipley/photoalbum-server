@@ -1,4 +1,5 @@
-﻿using Application.Photos;
+﻿using Application.Infrastructure;
+using Application.Photos;
 using Application.Photos.Persistence;
 using Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +9,18 @@ namespace Data.Photos;
 public class PhotoRepository : IPhotoRepository
 {
     protected readonly IApplicationContext _context;
+    private readonly IProvideTime _timeProvider;
 
-    public PhotoRepository(IApplicationContext context)
+    public PhotoRepository(
+        IApplicationContext context,
+        IProvideTime timeProvider
+    )
     {
         _context = context;
+        _timeProvider = timeProvider;
     }
 
-    // NOTE: this one belongs in a base repo.
+    // NOTE: this kind of stuff belongs in a base repo.
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return _context.SaveChangesAsync(cancellationToken);
@@ -28,21 +34,23 @@ public class PhotoRepository : IPhotoRepository
     public async Task<PhotoDetailsEntity> Upsert(PhotoDetailsEntity entity)
     {
         var existingEntity = await Find(entity.PhotoId);
-        var now = DateTime.UtcNow; // TODO: time provider[
+        var now = _timeProvider.UtcNow;
 
         if (existingEntity == null)
         {
             entity.CreatedOn = now;
             entity.LastUpdatedOn = now;
             _context.PhotoDetails.Add(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
         else
         {
-            // TODO: confirm this works as expected.
-            entity.LastUpdatedOn = now;
-            _context.PhotoDetails.Update(entity);
+            existingEntity.LastUpdatedOn = now;
+            existingEntity.Likes = entity.Likes;
+            _context.PhotoDetails.Update(existingEntity);
+            await _context.SaveChangesAsync();
+            return existingEntity;
         }
-
-        return entity;
     }
 }
