@@ -6,7 +6,7 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class PhotoController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet, Route("")]
     public IEnumerable<string> Get()
     {
         return Enumerable.Range(1, 5).Select(i => $"Photo #{ i }");
