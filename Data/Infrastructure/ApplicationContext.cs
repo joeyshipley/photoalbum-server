@@ -1,5 +1,6 @@
 ﻿using Application.Infrastructure;
 using Application.Photos;
+using Data.Photos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Infrastructure;
@@ -25,10 +26,15 @@ public class ApplicationContext : DbContext, IApplicationContext
         optionsBuilder.UseSqlServer(_settingsProvider.DbConnectionString());
     }
 
-    public DbSet<PhotoDetailsEntity> PhotoDetails => Set<PhotoDetailsEntity>();
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        PhotoDetailsModelBuilder.Configure(modelBuilder);
+    }
 
     public new Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return base.SaveChangesAsync(cancellationToken);
     }
+
+    public DbSet<PhotoDetailsEntity> PhotoDetails => Set<PhotoDetailsEntity>();
 }
