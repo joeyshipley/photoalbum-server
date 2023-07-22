@@ -1,23 +1,16 @@
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.SwaggerUI;
+using API.Infrastructure.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Services.AddDependencyRegistrations();
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen((c) =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "LT Photo Album API", Version = "v1" });
 });
-
-//httpConfiguration
-//     .EnableSwagger(c => c.SingleApiVersion("v1", "A title for your API"))
-//     .EnableSwaggerUi();
 
 
 var app = builder.Build();
