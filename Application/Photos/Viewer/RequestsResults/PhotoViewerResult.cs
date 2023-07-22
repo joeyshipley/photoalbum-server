@@ -1,11 +1,6 @@
 ﻿using Application.Infrastructure.RequestResponse;
 
-namespace Application.Photos.Viewer;
-
-public class PhotoViewerRequest
-{
-    public int Id { get; set; }
-}
+namespace Application.Photos.Viewer.RequestsResults;
 
 public class PhotoViewerResult : ResultBase
 {

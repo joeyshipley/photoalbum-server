@@ -1,6 +1,6 @@
 ﻿using Application.Infrastructure.RequestResponse;
 
-namespace Application.Photos.Viewer;
+namespace Application.Photos.Viewer.RequestsResults;
 
 public class PhotoViewerCollectionResult : ResultBase
 {
