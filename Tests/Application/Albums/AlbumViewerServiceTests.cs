@@ -1,4 +1,4 @@
-﻿using Application.Albums;
+﻿using Application.Albums.External;
 using Application.Albums.Viewer;
 using Application.Albums.Viewer.RequestsResults;
 using Application.Infrastructure.External;
@@ -17,10 +17,10 @@ public class AlbumViewerServiceTests
         // Arrange
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<List<AlbumEntry>>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<List<AlbumEntry>>
+            .Setup(x => x.GetAsync<List<AlbumExternalSourceDto>>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<List<AlbumExternalSourceDto>>
             {
-                Model = new List<AlbumEntry> { new AlbumEntry { Id = 1001 } },
+                Model = new List<AlbumExternalSourceDto> { new AlbumExternalSourceDto { Id = 1001 } },
             });
         var request = new AlbumViewerCollectionRequest();
 
@@ -52,8 +52,8 @@ public class AlbumViewerServiceTests
         // Arrange
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<List<AlbumEntry>>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<List<AlbumEntry>>
+            .Setup(x => x.GetAsync<List<AlbumExternalSourceDto>>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<List<AlbumExternalSourceDto>>
             {
                 Errors = new List<string> { "Nope!" }
             });
@@ -75,10 +75,10 @@ public class AlbumViewerServiceTests
         var albumId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<AlbumEntry>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<AlbumEntry>
+            .Setup(x => x.GetAsync<AlbumExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<AlbumExternalSourceDto>
             {
-                Model = new AlbumEntry { Id = albumId },
+                Model = new AlbumExternalSourceDto { Id = albumId },
             });
 
         var request = new AlbumViewerRequest { AlbumId = albumId };
@@ -112,8 +112,8 @@ public class AlbumViewerServiceTests
         var albumId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<AlbumEntry>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<AlbumEntry>
+            .Setup(x => x.GetAsync<AlbumExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<AlbumExternalSourceDto>
             {
                 Errors = new List<string> { "Nope!" }
             });

@@ -1,6 +1,6 @@
-﻿namespace Application.Photos;
+﻿namespace Application.Photos.External;
 
-public class PhotoEntry
+public class PhotoExternalSourceDto
 {
     public int Id { get; set; }
     public int AlbumId { get; set; }

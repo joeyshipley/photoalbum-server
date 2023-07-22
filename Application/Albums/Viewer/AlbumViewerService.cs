@@ -1,4 +1,5 @@
-﻿using Application.Albums.Viewer.RequestsResults;
+﻿using Application.Albums.External;
+using Application.Albums.Viewer.RequestsResults;
 using Application.Infrastructure.External;
 
 namespace Application.Albums.Viewer;
@@ -35,7 +36,7 @@ private readonly IUrlProvider _urlProvider;
         }
 
         var url = _urlProvider.UserManyAlbumsUrl(request.UserId);
-        var response = await _apiCaller.GetAsync<List<AlbumEntry>>(url);
+        var response = await _apiCaller.GetAsync<List<AlbumExternalSourceDto>>(url);
 
         if(!response.WasSuccessful())
         {
@@ -59,7 +60,7 @@ private readonly IUrlProvider _urlProvider;
         }
         
         var url = _urlProvider.AlbumSingleUrl(request.AlbumId);
-        var response = await _apiCaller.GetAsync<AlbumEntry>(url);
+        var response = await _apiCaller.GetAsync<AlbumExternalSourceDto>(url);
 
         if(!response.WasSuccessful())
         {

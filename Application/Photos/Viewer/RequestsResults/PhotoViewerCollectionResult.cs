@@ -4,5 +4,5 @@ namespace Application.Photos.Viewer.RequestsResults;
 
 public class PhotoViewerCollectionResult : ResultBase
 {
-    public List<PhotoEntry> Photos { get; set; } = new List<PhotoEntry>();
+    public List<PhotoEntryDto> Photos { get; set; } = new List<PhotoEntryDto>();
 }

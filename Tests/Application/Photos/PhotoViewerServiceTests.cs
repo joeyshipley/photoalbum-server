@@ -1,5 +1,7 @@
 using Application.Infrastructure.External;
 using Application.Photos;
+using Application.Photos.External;
+using Application.Photos.Persistence;
 using Application.Photos.Viewer;
 using Application.Photos.Viewer.RequestsResults;
 using FluentAssertions;
@@ -17,10 +19,10 @@ public class PhotoViewerServiceTests
         // Arrange
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<List<PhotoEntry>>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<List<PhotoEntry>>
+            .Setup(x => x.GetAsync<List<PhotoExternalSourceDto>>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<List<PhotoExternalSourceDto>>
             {
-                Model = new List<PhotoEntry> { new PhotoEntry { Id = 1001 } },
+                Model = new List<PhotoExternalSourceDto> { new PhotoExternalSourceDto { Id = 1001 } },
             });
         var request = new PhotoViewerCollectionRequest { AlbumId = 1 };
 
@@ -52,8 +54,8 @@ public class PhotoViewerServiceTests
         // Arrange
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<List<PhotoEntry>>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<List<PhotoEntry>>
+            .Setup(x => x.GetAsync<List<PhotoExternalSourceDto>>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<List<PhotoExternalSourceDto>>
             {
                 Errors = new List<string> { "Nope!" }
             });
@@ -75,10 +77,10 @@ public class PhotoViewerServiceTests
         var photoId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<PhotoEntry>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<PhotoEntry>
+            .Setup(x => x.GetAsync<PhotoExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<PhotoExternalSourceDto>
             {
-                Model = new PhotoEntry { Id = photoId },
+                Model = new PhotoExternalSourceDto { Id = photoId },
             });
 
         var request = new PhotoViewerRequest { PhotoId = photoId };
@@ -88,6 +90,60 @@ public class PhotoViewerServiceTests
 
         // Assert
         result.Photo.Id.Should().Be(photoId);
+    }
+    
+    [Test]
+    public async Task View_WhenNoDetailsRecordExist()
+    {
+        // Arrange
+        var photoId = 1001;
+        var apiCallerMock = Mocker.GetMock<IApiCaller>();
+        apiCallerMock
+            .Setup(x => x.GetAsync<PhotoExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<PhotoExternalSourceDto>
+            {
+                Model = new PhotoExternalSourceDto { Id = photoId },
+            });
+
+        Mocker.GetMock<IPhotoRepository>()
+            .Setup(x => x.Find(It.IsAny<int>()))
+            .ReturnsAsync((PhotoDetailsEntity) null);
+
+        var request = new PhotoViewerRequest { PhotoId = photoId };
+
+        // Act
+        var result = await UnderTest.View(request);
+
+        // Assert
+        result.Photo.Id.Should().Be(photoId);
+        result.Photo.Likes.Should().BeNull();
+    }
+    
+    [Test]
+    public async Task View_WhenDetailsRecordDoesExist()
+    {
+        // Arrange
+        var photoId = 1001;
+        var apiCallerMock = Mocker.GetMock<IApiCaller>();
+        apiCallerMock
+            .Setup(x => x.GetAsync<PhotoExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<PhotoExternalSourceDto>
+            {
+                Model = new PhotoExternalSourceDto { Id = photoId },
+            });
+
+        Mocker.GetMock<IPhotoRepository>()
+            .Setup(x => x.Find(It.IsAny<int>()))
+            .ReturnsAsync(new PhotoDetailsEntity { Likes = 101 });
+
+        var request = new PhotoViewerRequest { PhotoId = photoId };
+
+        // Act
+        var result = await UnderTest.View(request);
+
+        // Assert
+        result.Photo.Id.Should().Be(photoId);
+        result.Photo.Likes.Should().Be(101);
     }
 
     [Test]
@@ -112,8 +168,8 @@ public class PhotoViewerServiceTests
         var photoId = 1001;
         var apiCallerMock = Mocker.GetMock<IApiCaller>();
         apiCallerMock
-            .Setup(x => x.GetAsync<PhotoEntry>(It.IsAny<string>()))
-            .ReturnsAsync(new ApiCallerResponse<PhotoEntry>
+            .Setup(x => x.GetAsync<PhotoExternalSourceDto>(It.IsAny<string>()))
+            .ReturnsAsync(new ApiCallerResponse<PhotoExternalSourceDto>
             {
                 Errors = new List<string> { "Nope!" }
             });

@@ -1,6 +1,6 @@
-﻿namespace Application.Albums;
+﻿namespace Application.Albums.External;
 
-public class AlbumEntry
+public class AlbumExternalSourceDto
 {
     public int Id { get; set; }
     public int UserId { get; set; }

@@ -4,5 +4,5 @@ namespace Application.Photos.Viewer.RequestsResults;
 
 public class PhotoViewerResult : ResultBase
 {
-    public PhotoEntry Photo { get; set; }
+    public PhotoDetailsDto Photo { get; set; }
 }

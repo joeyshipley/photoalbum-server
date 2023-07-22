@@ -1,4 +1,6 @@
 ﻿using Application.Infrastructure.External;
+using Application.Photos.External;
+using Application.Photos.Persistence;
 using Application.Photos.Viewer.RequestsResults;
 
 namespace Application.Photos.Viewer;
@@ -13,14 +15,17 @@ public class PhotoViewerService : IPhotoViewerService
 {
     private readonly IUrlProvider _urlProvider;
     private readonly IApiCaller _apiCaller;
+    private readonly IPhotoRepository _photoRepository;
 
     public PhotoViewerService(
         IUrlProvider urlProvider,
-        IApiCaller apiCaller
+        IApiCaller apiCaller,
+        IPhotoRepository photoRepository
     )
     {
         _urlProvider = urlProvider;
         _apiCaller = apiCaller;
+        _photoRepository = photoRepository;
     }
 
     public async Task<PhotoViewerCollectionResult> ViewForAlbum(PhotoViewerCollectionRequest request)
@@ -35,7 +40,7 @@ public class PhotoViewerService : IPhotoViewerService
         }
         
         var url = _urlProvider.AlbumManyPhotosUrl(request.AlbumId);
-        var response = await _apiCaller.GetAsync<List<PhotoEntry>>(url);
+        var response = await _apiCaller.GetAsync<List<PhotoExternalSourceDto>>(url);
 
         if(!response.WasSuccessful())
         {
@@ -43,7 +48,9 @@ public class PhotoViewerService : IPhotoViewerService
             return result;
         }
 
-        result.Photos = response.Model;
+        result.Photos = response.Model
+            .Select(PhotoEntryDto.From)
+            .ToList();
         return result;
     }
 
@@ -59,15 +66,19 @@ public class PhotoViewerService : IPhotoViewerService
         }
 
         var url = _urlProvider.PhotoSingleUrl(request.PhotoId);
-        var response = await _apiCaller.GetAsync<PhotoEntry>(url);
-
+        var response = await _apiCaller.GetAsync<PhotoExternalSourceDto>(url);
         if(!response.WasSuccessful())
         {
             result.AddErrors(response.Errors.Select(e => (Key: "API_FAILURE", Text: e)).ToList());
             return result;
         }
 
-        result.Photo = response.Model;
+        var photoDetailsDto = PhotoDetailsDto.From(response.Model);
+        var photoEntity = await _photoRepository.Find(request.PhotoId);
+        if(photoEntity != null)
+            photoDetailsDto.Likes = photoEntity.Likes;
+        
+        result.Photo = photoDetailsDto;
         return result;
     }
 }

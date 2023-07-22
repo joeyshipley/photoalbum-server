@@ -3,7 +3,7 @@
 public class PhotoDetailsEntity
 {
     public int Id { get; set; }
-    public int PhotoId { get; set; } // TODO: enforce unique in DB.
+    public int PhotoId { get; set; }
     public int Likes { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime LastUpdatedOn { get; set; }
