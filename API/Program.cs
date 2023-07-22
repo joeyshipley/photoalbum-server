@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
 using API.Infrastructure.IoC;
+using Data.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,11 +9,18 @@ builder.Services.AddDependencyRegistrations();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// TODO: check into whether this is needed or even works
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)
+    )
+);
+
 builder.Services.AddSwaggerGen((c) =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "LT Photo Album API", Version = "v1" });
 });
-
 
 var app = builder.Build();
 

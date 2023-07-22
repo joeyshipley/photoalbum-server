@@ -6,10 +6,11 @@ public static class DependencyRegistrations
 {
     private static readonly Assembly[] _autoResolvedAssemblies = new []
     {
+        Assembly.Load("API"),
         Assembly.Load("Application"),
         Assembly.Load("Data"),
     };
-
+    
     public static IServiceCollection AddDependencyRegistrations(this IServiceCollection services)
     {
         services.Scan(scan =>
