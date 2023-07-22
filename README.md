@@ -14,11 +14,11 @@ LTPA_DEV
  ```
 
 > Local App Settings in both locations (will revisit)
+
+- ./API/appsettings.development.json
+- ./Data/appsettings.local.json
+  
 ``` 
-./API/appsettings.development.json
-./Data/appsettings.local.json
-
-
 Server=localhost\SQLEXPRESS;Database=LTPA_DEV;Trusted_Connection=True; 
 ```
 
