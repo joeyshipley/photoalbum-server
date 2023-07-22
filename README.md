@@ -16,10 +16,10 @@
 > Install dotnet ef CLI tools
 ``` > dotnet tool install --global dotnet-ef ```
 
-> Run local migrations (In Data folder)
-``` > dotnet ef database update --context LocalMigrationContext ```
+> Run local migrations (root folder)
+``` > dotnet ef database update --context MigrationContext --startup-project .\Data ```
 
 ##### Adding Migrations
 
-> Use Migration Context (In Data folder)
-``` > dotnet ef migrations add NameOfTheMigrationBeingCreated --context LocalMigrationContext ```
+> Use Migration Context (root folder)
+``` > dotnet ef migrations add NameOfTheMigrationBeingCreated --context MigrationContext --startup-project .\Data ```

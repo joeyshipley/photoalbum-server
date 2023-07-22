@@ -1,10 +1,15 @@
 using Microsoft.OpenApi.Models;
 using API.Infrastructure.IoC;
 using Data.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencyRegistrations();
+builder.Services.AddDbContext<MigrationContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging()
+);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -17,7 +22,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-var appContext = builder.Services.Resolve<IApplicationContext>();
+var appContext = builder.Services.Resolve<IMigrationContext>();
 await appContext.Migrate();
 
 app.UseHttpsRedirection();

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(LocalMigrationContext))]
+    [DbContext(typeof(MigrationContext))]
     [Migration("20230722130849_CreatePhotoDetails")]
     partial class CreatePhotoDetails
     {

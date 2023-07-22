@@ -1,13 +1,11 @@
 ﻿using Application.Infrastructure;
 using Application.Photos;
-using Data.Photos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Infrastructure;
 
 public interface IApplicationContext
 {
-    Task Migrate();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     DbSet<PhotoDetailsEntity> PhotoDetails { get; }
@@ -28,12 +26,8 @@ public class ApplicationContext : DbContext, IApplicationContext
         optionsBuilder.UseSqlServer(connectionString);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        PhotoDetailsModelBuilder.Configure(modelBuilder);
-    }
-
-    public async Task Migrate() => await Database.MigrateAsync();
+    protected override void OnModelCreating(ModelBuilder modelBuilder) => 
+        DbContextModelBuilder.ConfigureModels(modelBuilder);
 
     public DbSet<PhotoDetailsEntity> PhotoDetails => Set<PhotoDetailsEntity>();
 }
