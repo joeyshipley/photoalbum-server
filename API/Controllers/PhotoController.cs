@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Infrastructure.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
@@ -7,8 +8,10 @@ namespace API.Controllers;
 public class PhotoController : ControllerBase
 {
     [HttpGet, Route("")]
-    public IEnumerable<string> Get()
+    public JsonResult Get()
     {
-        return Enumerable.Range(1, 5).Select(i => $"Photo #{ i }");
+        var result = Enumerable.Range(1, 5).Select(i => $"Photo #{ i }");
+
+        return ResponseHelper.Success(result);
     }
 }
