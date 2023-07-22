@@ -23,7 +23,7 @@ public class MigrationContext : DbContext, IMigrationContext
         _hasContextOptions = true;
     }
 
-    // TODO: no bueno revisit this, forgot how painful EF migrations were.
+    // TODO: no bueno, revisit this, I forgot how painful EF's migration tooling was.
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if(_hasContextOptions)
