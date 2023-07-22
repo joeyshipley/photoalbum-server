@@ -2,15 +2,10 @@
 
 namespace Tests.Infrastructure;
 
-public class TestFor<T>
+public class ComponentTestOf<T>
     where T : class
 {
     protected T UnderTest;
-
-    [OneTimeSetUp]
-    public void BeforeTestSuite()
-    {
-    }
 
     [SetUp]
     public void BaseBeforeEach()

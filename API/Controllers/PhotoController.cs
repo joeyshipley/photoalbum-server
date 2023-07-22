@@ -15,11 +15,13 @@ public class PhotoController : ControllerBase
         _photoViewerService = photoViewerService;
     }
 
-    [HttpGet, Route("")]
-    public JsonResult Get()
+    [HttpGet, Route("{id}")]
+    public async Task<JsonResult> View(int id)
     {
-        var request = new PhotoViewerRequest { Id = 1001 };
-        var result = _photoViewerService.View(request);
+        var request = new PhotoViewerRequest { Id = id };
+        var result = await _photoViewerService.View(request);
+        if(result.Errors.Any())
+            return ResponseHelper.Fail(result.Errors);
 
         return ResponseHelper.Success(result);
     }

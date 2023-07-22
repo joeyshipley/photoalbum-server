@@ -1,17 +1,39 @@
-﻿namespace Application.Photos.Viewer;
+﻿using Application.Infrastructure.External;
+
+namespace Application.Photos.Viewer;
 
 public interface IPhotoViewerService
 {
-    PhotoViewerResult View(PhotoViewerRequest request);
+    Task<PhotoViewerResult> View(PhotoViewerRequest request);
 }
 
 public class PhotoViewerService : IPhotoViewerService
 {
-    public PhotoViewerResult View(PhotoViewerRequest request)
+    private readonly IUrlProvider _urlProvider;
+    private readonly IApiCaller _apiCaller;
+
+    public PhotoViewerService(
+        IUrlProvider urlProvider,
+        IApiCaller apiCaller
+    )
     {
-        return new PhotoViewerResult
+        _urlProvider = urlProvider;
+        _apiCaller = apiCaller;
+    }
+
+    public async Task<PhotoViewerResult> View(PhotoViewerRequest request)
+    {
+        var result = new PhotoViewerResult();
+        var url = _urlProvider.PhotoUrl(request.Id);
+        var response = await _apiCaller.GetAsync<PhotoEntry>(url);
+
+        if(!response.WasSuccessful())
         {
-            Photo = new PhotoEntry { Id = 1001, AlbumId = 101, Title = "Nope", ThumbnailUrl = "nope.nope", Url = "nope.nope" }
-        };
+            result.AddErrors(response.Errors.Select(e => (Key: "API_FAILURE", Text: e)).ToList());
+            return result;
+        }
+
+        result.Photo = response.Model;
+        return result;
     }
 }
