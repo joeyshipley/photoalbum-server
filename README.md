@@ -2,7 +2,7 @@
 
 ### Local Development
 
-##### Setup
+#### Setup
 
 > Install SQL Server Express 2019
 
@@ -22,7 +22,7 @@ LTPA_DEV
 Server=localhost\SQLEXPRESS;Database=LTPA_DEV;Trusted_Connection=True; 
 ```
 
-##### Adding Migrations
+#### Adding Migrations
 
 > Install dotnet ef CLI tools
 ```
