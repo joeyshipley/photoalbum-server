@@ -1,6 +1,6 @@
 ﻿using Application.Infrastructure.External;
 using FluentAssertions;
-using Tests.Infrastructure;
+using Tests.Infrastructure.TestBases;
 
 namespace Tests.Application;
 

@@ -4,7 +4,7 @@ using Data.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Tests.Infrastructure.Fakes;
 
-namespace Tests.Infrastructure;
+namespace Tests.Infrastructure.TestBases;
 
 public class ComponentTestOf<T>
     where T : class
@@ -33,8 +33,8 @@ public class ComponentTestOf<T>
         AfterEach();
     }
 
-    protected virtual void BeforeEach() {}
-    protected virtual void AfterEach() {}
+    protected virtual void BeforeEach() { }
+    protected virtual void AfterEach() { }
 
     protected TResolveFor Resolve<TResolveFor>()
     {
@@ -46,7 +46,7 @@ public class ComponentTestOf<T>
         TimeProvider = new FakeTimeProvider();
         TimeProvider.SetTime(DataDefaults.CurrentDate);
 
-        DependencyFakes.Add((services) => 
+        DependencyFakes.Add((services) =>
         {
             services.AddScoped<IApplicationContext, InMemoryDbContext>();
             services.AddSingleton<IProvideTime>(TimeProvider);

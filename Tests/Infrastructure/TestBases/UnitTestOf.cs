@@ -2,7 +2,7 @@
 using Moq;
 using Moq.AutoMock;
 
-namespace Tests.Infrastructure;
+namespace Tests.Infrastructure.TestBases;
 
 public class UnitTestOf<T>
     where T : class
@@ -17,11 +17,11 @@ public class UnitTestOf<T>
         attachRealDependencies(Mocker);
 
         BeforeEach();
-        
+
         UnderTest = Mocker.CreateInstance<T>();
     }
 
-    protected virtual void BeforeEach() {}
+    protected virtual void BeforeEach() { }
 
     private void attachRealDependencies(AutoMocker autoMocker)
     {

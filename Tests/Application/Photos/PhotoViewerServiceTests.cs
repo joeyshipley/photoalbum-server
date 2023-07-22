@@ -4,7 +4,7 @@ using Application.Photos.Viewer;
 using Application.Photos.Viewer.RequestsResults;
 using FluentAssertions;
 using Moq;
-using Tests.Infrastructure;
+using Tests.Infrastructure.TestBases;
 
 namespace Tests.Application.Photos;
 

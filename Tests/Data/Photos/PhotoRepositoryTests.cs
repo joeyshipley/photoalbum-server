@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Tests.Infrastructure;
 using Tests.Infrastructure.Creationals.Entities;
+using Tests.Infrastructure.TestBases;
 
 namespace Tests.Data.Photos;
 

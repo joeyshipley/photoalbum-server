@@ -4,7 +4,7 @@ using Application.Albums.Viewer.RequestsResults;
 using Application.Infrastructure.External;
 using FluentAssertions;
 using Moq;
-using Tests.Infrastructure;
+using Tests.Infrastructure.TestBases;
 
 namespace Tests.Application.Albums;
 
