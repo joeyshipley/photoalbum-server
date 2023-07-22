@@ -1,10 +1,18 @@
 ﻿using System.Net;
+using Application.Infrastructure.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Infrastructure.Controllers;
 
 public static class ResponseHelper
 {
+    public static JsonResult Respond(ResultBase result)
+    {
+        return result.Errors.Any() 
+            ? ResponseHelper.Fail(result.Errors) 
+            : ResponseHelper.Success(result);
+    }
+
     public static JsonResult Success() => 
         Success(new {});
 
