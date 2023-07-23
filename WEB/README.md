@@ -1,4 +1,6 @@
-## Local Setup
+## LT Photo Album API
+
+### Local Setup
 
 - Copy and rename ```.env.local_EXAMPLE``` to ```.env.local```
 - Replace the url with whatever URL is provide when running the .NET API locally.
