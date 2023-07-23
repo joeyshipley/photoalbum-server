@@ -13,6 +13,7 @@ type ContextSettings = {
 
   chooseAlbum: Function,
   choosePhoto: Function,
+  likePhoto: Function,
 };
 export const defaultContextSettings = (): ContextSettings => {
   return {
@@ -25,6 +26,7 @@ export const defaultContextSettings = (): ContextSettings => {
 
     chooseAlbum: () => {},
     choosePhoto: () => {},
+    likePhoto: () => {},
   };
 };
 
@@ -80,6 +82,16 @@ export const PhotoAlbumProvider = ({ children }) => {
     setErrors(response.errors ?? []);
   };
 
+  const likePhoto = async (photoId) => {
+    const id = Number(photoId);
+    const response = await photoAlbumService.likeIt(id);
+    const likeResult = response.data?.photoLikeDetails;
+    if(likeResult) {
+      setSelectedPhoto({ ...selectedPhoto!, likes: likeResult.likes });
+    }
+    setErrors(response.errors ?? []);
+  }
+
   const contextData = {
     ...defaultContextSettings(),
 
@@ -92,6 +104,7 @@ export const PhotoAlbumProvider = ({ children }) => {
 
     chooseAlbum,
     choosePhoto,
+    likePhoto,
   };
   return (
     <PhotoAlbumContext.Provider

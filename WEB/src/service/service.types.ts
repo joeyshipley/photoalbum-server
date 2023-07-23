@@ -18,3 +18,8 @@ export type PhotoDetails = {
   thumbnailUrl: string,
   likes: number | undefined,
 };
+
+export type LikeResult = {
+  photoId: number,
+  likes: number | undefined,
+}

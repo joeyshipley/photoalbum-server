@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   Album,
   AlbumPhoto,
-  PhotoDetails
+  PhotoDetails,
+  LikeResult
 } from 'src/service/service.types';
 
 type ServiceResponse<T> = {
@@ -25,7 +26,7 @@ export default {
       const url = `${ BASE_URL }/photos/${ photoId }`;
       return handleResponse(axios.get(url));
     },
-    like: (photoId) => {
+    likeIt: (photoId): Promise<ServiceResponse<{ photoLikeDetails: LikeResult }>> => {
       const url = `${ BASE_URL }/photos/${ photoId }/like`;
       return handleResponse(axios.post(url));
     },

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import {fireEvent, render, screen } from '@testing-library/react';
 import { defaultContextSettings, PhotoAlbumContext } from 'src/context/photo-album.context';
-import PhotoDetails from 'src/components/photo-details';
+import PhotoDetails from 'src/components/photo-details'; import AlbumPhotos from './album-photos';
 
 describe('PhotoDetails', () => {
 
@@ -81,6 +81,28 @@ describe('PhotoDetails', () => {
     const likeButton = screen.getByTestId('like-button');
 
     expect(likeButton).toHaveTextContent('LIKE (99)');
+  });
+
+  it('Calls like with correct id when like button is clicked.', () => {
+    let selectedId = -1;
+
+    render(
+      <PhotoAlbumContext.Provider value={{
+        ...defaultContextSettings(),
+        selectedPhoto: {
+          id: 101, albumId: 1, title: 'My Photo', likes: 99,
+          thumbnailUrl: 'thumb.jpg', url: 'full.jpg',
+        },
+        likePhoto: (value) => { selectedId = value }
+      }}>
+        <PhotoDetails />
+      </PhotoAlbumContext.Provider>
+    );
+    const likeButton = screen.getByTestId('like-button');
+
+    fireEvent.click(likeButton);
+
+    expect(selectedId).toBe(101);
   });
 
 });
