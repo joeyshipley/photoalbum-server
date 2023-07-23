@@ -1,30 +1,34 @@
 import axios from 'axios';
+import { Album } from 'src/service/service.types';
+
+type ServiceResponse<T> = {
+  data: T,
+  errors: [],
+};
 
 // TODO: real app would get this from ENV.
 const BASE_URL = 'https://localhost:7038/api';
 export default {
-    albums() {
+    albums: (): Promise<ServiceResponse<{ albums: Album[] }>> => {
       const url = `${ BASE_URL }/albums`;
-      return axios
-        .get(url)
-        .then((response) => response.data);
+      return handleResponse(axios.get(url));
     },
-    albumPhotos(albumId) {
+    albumPhotos: (albumId) => {
       const url = `${ BASE_URL }/photos/album/${ albumId }`;
-      return axios
-        .get(url)
-        .then((response) => response.data);
+      return handleResponse(axios.get(url));
     },
-    photo(photoId) {
+    photo: (photoId) => {
       const url = `${ BASE_URL }/photos/${ photoId }`;
-      return axios
-        .get(url)
-        .then((response) => response.data);
+      return handleResponse(axios.get(url));
     },
-    like(photoId) {
+    like: (photoId) => {
       const url = `${ BASE_URL }/photos/${ photoId }/like`;
-      return axios
-        .post(url)
-        .then((response) => response.data);
+      return handleResponse(axios.post(url));
     },
+}
+
+function handleResponse(axiosCall) {
+  return axiosCall
+    .then((response) => response)
+    .catch((error) => { return { errors: error.response?.data?.errors }});
 }
