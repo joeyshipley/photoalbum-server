@@ -1,4 +1,4 @@
-## LT Photo Album API
+## LT Photo Album Web Client
 
 ### Local Setup
 
