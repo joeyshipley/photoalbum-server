@@ -22,9 +22,9 @@ LTPA_DEV
 Server=localhost\SQLEXPRESS;Database=LTPA_DEV;Trusted_Connection=True; 
 ```
 
-#### Adding Migrations
+#### Migrations
 
-**NOTE:** The app is setup to run the migrations on start.
+**NOTE:** The app is set up to run the migrations on start. If you want to run them manually, see below.
 
 > Install dotnet ef CLI tools
 ```
