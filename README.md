@@ -1,5 +1,7 @@
 ### LT Photo Album Site
 
+This app is both a backend C# .NET Web API app and a frontend React client app.
+
 - LT Photo Album API --> [See API Readme](SERVER/README.md)
 - LT Photo Album WEB --> [See WEB Readme](WEB/README.md)
 
