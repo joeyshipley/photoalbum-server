@@ -41,6 +41,18 @@
   color: #888;
 }
 
+.app-container {}
+.app-container .simple-columns
+{
+  display: flex;
+  flex-direction: row;
+}
+.app-container .simple-columns .half
+{
+  width: 48%;
+  margin-right: 1%;
+}
+
 .album-photos-container
 {
   display: flex;

@@ -43,6 +43,12 @@ export const PhotoAlbumProvider = ({ children }) => {
   }, []);
 
   const chooseAlbum = async (albumId) => {
+    if(!albumId) {
+      setSelectedAlbum(undefined);
+      setAlbumPhotos([]);
+      return;
+    }
+
     const id = Number(albumId);
     const album = albums.find((a: Album) => a.id === id);
     setSelectedAlbum(album);
