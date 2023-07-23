@@ -2,6 +2,10 @@
 
 ### Local Development
 
+#### Requirements
+- SQL Server (Express is fine)
+- Visual Studio (Or other IDE that will run it locally)
+
 #### Setup
 
 > Install SQL Server Express 2019
