@@ -10,6 +10,18 @@ builder.Services.AddDbContext<MigrationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging()
 );
 
+const string POLICY_NAME = "CORS_POLICY";
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: POLICY_NAME, policyBuilder =>
+    {
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -27,6 +39,7 @@ await appContext.Migrate();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseCors(POLICY_NAME);
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>

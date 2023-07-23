@@ -17,7 +17,7 @@ public static class ResponseHelper
         Success(new {});
 
     public static JsonResult Success(dynamic data) => 
-        new JsonResult(new { Result = data }) { StatusCode = (int) HttpStatusCode.OK };
+        new JsonResult(data) { StatusCode = (int) HttpStatusCode.OK };
 
     public static JsonResult Fail(Exception exception) => 
         Fail(new List<string> { exception.Message });
