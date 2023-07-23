@@ -4,5 +4,5 @@
 - LT Photo Album WEB --> [See WEB Readme](WEB/README.md)
 
 ### Demo
-[Video Demo](https://youtu.be/Y8cCpm-t2JM)
-[![LTPA Demo](Demo.PNG)](https://youtu.be/Y8cCpm-t2JM)
+[Video Demo](https://youtu.be/Y8cCpm-t2JM){:target="_blank"}
+[![LTPA Demo](Demo.PNG)](https://youtu.be/Y8cCpm-t2JM){:target="_blank"}
