@@ -40,3 +40,28 @@
 .read-the-docs {
   color: #888;
 }
+
+.album-photos-container
+{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.album-photo
+{
+  margin: 0 0.5em;
+  cursor: pointer;
+}
+
+.album-photo .thumbnail
+{
+  width: 100px;
+  height: 100px;
+}
+.album-photo .title
+{
+  position: relative;
+  display: block;
+  font-size: small;
+  margin-bottom: 0.5em;
+}

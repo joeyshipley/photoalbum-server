@@ -7,7 +7,7 @@ function Albums() {
     <>
       <div className="card">
         <select data-testid="albums-select"
-          value=""
+          value={ selectedAlbum?.id }
           onChange={ (e) => chooseAlbum(e.target.value) }
         >
           <option data-testid="album-option" key={ `option-0` } value="">Choose an Album</option>

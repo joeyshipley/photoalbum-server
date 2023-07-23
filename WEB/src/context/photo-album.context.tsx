@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import photoAlbumService from 'src/service/photo-album.service';
-import { Album } from 'src/service/service.types';
+import { Album,AlbumPhoto } from 'src/service/service.types';
 
 type ContextSettings = {
     errors: [],
     albums: Album[],
     selectedAlbum: object | undefined,
-    photos: [],
+    albumPhotos: AlbumPhoto[],
     selectedPhoto: object | undefined,
 
     chooseAlbum: Function,
@@ -18,7 +18,7 @@ export const defaultContextSettings = (): ContextSettings => {
     errors: [],
     albums: [],
     selectedAlbum: undefined,
-    photos: [],
+    albumPhotos: [],
     selectedPhoto: undefined,
 
     chooseAlbum: () => {},
@@ -31,6 +31,7 @@ export const PhotoAlbumContext = createContext(defaultContextSettings());
 export const PhotoAlbumProvider = ({ children }) => {
   const [ errors, setErrors ] = useState<[]>([]);
   const [ albums, setAlbums ] = useState<Album[]>([]);
+  const [ albumPhotos, setAlbumPhotos ] = useState<AlbumPhoto[]>([]);
   const [ selectedAlbum, setSelectedAlbum ] = useState<object | undefined>(undefined);
 
   useEffect(() => {
@@ -45,6 +46,12 @@ export const PhotoAlbumProvider = ({ children }) => {
     const id = Number(albumId);
     const album = albums.find((a: Album) => a.id === id);
     setSelectedAlbum(album);
+
+    photoAlbumService.albumPhotos(albumId)
+      .then((response) => {
+        setAlbumPhotos(response.data?.photos ?? []);
+        setErrors(response.errors ?? []);
+      });
   };
 
   const contextData = {
@@ -52,6 +59,8 @@ export const PhotoAlbumProvider = ({ children }) => {
     errors: errors,
     albums: albums,
     selectedAlbum,
+    albumPhotos,
+
     chooseAlbum,
   };
   return (
