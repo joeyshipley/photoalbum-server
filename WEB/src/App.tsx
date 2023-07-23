@@ -3,6 +3,7 @@ import { usePhotoAlbumContext } from 'src/context/photo-album.context';
 import './App.css'
 import Albums from 'src/components/albums';
 import AlbumPhotos from 'src/components/album-photos';
+import PhotoDetails from 'src/components/photo-details';
 
 function App() {
   const { errors } = usePhotoAlbumContext();
@@ -19,11 +20,10 @@ function App() {
           <AlbumPhotos />
         </section>
         <section className="half">
-          Lorem Ipsum
+          <PhotoDetails />
         </section>
       </div>
     </div>
   )
 }
-
-export default App
+export default App;

@@ -28,4 +28,4 @@ function Albums() {
     </>
   )
 }
-export default Albums
+export default Albums;

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {
   Album,
-  AlbumPhoto
+  AlbumPhoto,
+  PhotoDetails
 } from 'src/service/service.types';
 
 type ServiceResponse<T> = {
@@ -20,7 +21,7 @@ export default {
       const url = `${ BASE_URL }/photos/album/${ albumId }`;
       return handleResponse(axios.get(url));
     },
-    photo: (photoId) => {
+    photo: (photoId): Promise<ServiceResponse<{ photo: PhotoDetails }>> => {
       const url = `${ BASE_URL }/photos/${ photoId }`;
       return handleResponse(axios.get(url));
     },

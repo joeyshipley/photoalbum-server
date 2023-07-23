@@ -77,3 +77,9 @@
   font-size: small;
   margin-bottom: 0.5em;
 }
+
+.like-button
+{
+  margin: 1em 0;
+  background-color: pink;
+}

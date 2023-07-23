@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import photoAlbumService from 'src/service/photo-album.service';
-import { Album,AlbumPhoto } from 'src/service/service.types';
+import { Album, AlbumPhoto, PhotoDetails } from 'src/service/service.types';
 
 type ContextSettings = {
-    errors: [],
-    albums: Album[],
-    selectedAlbum: object | undefined,
-    albumPhotos: AlbumPhoto[],
-    selectedPhoto: object | undefined,
+  isLoading: boolean,
+  errors: [],
+  albums: Album[],
+  selectedAlbum: Album | undefined,
+  albumPhotos: AlbumPhoto[],
+  selectedPhoto: PhotoDetails | undefined,
 
-    chooseAlbum: Function,
-    choosePhoto: Function,
+  chooseAlbum: Function,
+  choosePhoto: Function,
 };
 export const defaultContextSettings = (): ContextSettings => {
   return {
+    isLoading: false,
     errors: [],
     albums: [],
     selectedAlbum: undefined,
@@ -29,10 +31,12 @@ export const defaultContextSettings = (): ContextSettings => {
 export const PhotoAlbumContext = createContext(defaultContextSettings());
 
 export const PhotoAlbumProvider = ({ children }) => {
+  const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ errors, setErrors ] = useState<[]>([]);
   const [ albums, setAlbums ] = useState<Album[]>([]);
   const [ albumPhotos, setAlbumPhotos ] = useState<AlbumPhoto[]>([]);
-  const [ selectedAlbum, setSelectedAlbum ] = useState<object | undefined>(undefined);
+  const [ selectedAlbum, setSelectedAlbum ] = useState<Album | undefined>(undefined);
+  const [ selectedPhoto, setSelectedPhoto ] = useState<PhotoDetails | undefined>(undefined);
 
   useEffect(() => {
     photoAlbumService.albums()
@@ -43,8 +47,12 @@ export const PhotoAlbumProvider = ({ children }) => {
   }, []);
 
   const chooseAlbum = async (albumId) => {
+    await setIsLoading(true);
+
     if(!albumId) {
+      await setIsLoading(false);
       setSelectedAlbum(undefined);
+      setSelectedPhoto(undefined);
       setAlbumPhotos([]);
       return;
     }
@@ -53,21 +61,37 @@ export const PhotoAlbumProvider = ({ children }) => {
     const album = albums.find((a: Album) => a.id === id);
     setSelectedAlbum(album);
 
-    photoAlbumService.albumPhotos(albumId)
-      .then((response) => {
-        setAlbumPhotos(response.data?.photos ?? []);
-        setErrors(response.errors ?? []);
-      });
+    const response = await photoAlbumService.albumPhotos(id);
+    await setIsLoading(false);
+    setAlbumPhotos(response.data?.photos ?? []);
+    setSelectedPhoto(undefined);
+    setErrors(response.errors ?? []);
+  };
+
+  const choosePhoto = async (photoId) => {
+    if(isLoading) return;
+
+    await setIsLoading(true);
+    const id = Number(photoId);
+
+    const response = await photoAlbumService.photo(id);
+    await setIsLoading(false);
+    setSelectedPhoto(response.data?.photo);
+    setErrors(response.errors ?? []);
   };
 
   const contextData = {
     ...defaultContextSettings(),
-    errors: errors,
-    albums: albums,
+
+    isLoading,
+    errors,
+    albums,
     selectedAlbum,
     albumPhotos,
+    selectedPhoto,
 
     chooseAlbum,
+    choosePhoto,
   };
   return (
     <PhotoAlbumContext.Provider

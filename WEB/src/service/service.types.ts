@@ -9,3 +9,12 @@ export type AlbumPhoto = {
   title: string,
   thumbnailUrl: string,
 }
+
+export type PhotoDetails = {
+  id: number,
+  albumId: number,
+  title: string,
+  url: string,
+  thumbnailUrl: string,
+  likes: number | undefined,
+};
