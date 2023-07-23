@@ -24,6 +24,8 @@ Server=localhost\SQLEXPRESS;Database=LTPA_DEV;Trusted_Connection=True;
 
 #### Adding Migrations
 
+**NOTE:** The app is setup to run the migrations on start.
+
 > Install dotnet ef CLI tools
 ```
 > dotnet tool install --global dotnet-ef
