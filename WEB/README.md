@@ -1,7 +1,10 @@
 ## Local Setup
 
-Set the API url -- a real app would pull that from the project's env/settings.
-> Location - src/service/photo-album.service.ts
+- Copy and rename ```.env.local_EXAMPLE``` to ```.env.local```
+- Replace the url with whatever URL is provide when running the .NET API locally.
+```
+VITE_API_URL=https://localhost:7038/api
+```
 
 #### Tests
 > terminal > npm test

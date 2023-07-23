@@ -11,8 +11,7 @@ type ServiceResponse<T> = {
   errors: [],
 };
 
-// TODO: real app would get this from ENV.
-const BASE_URL = 'https://localhost:7038/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 export default {
     albums: (): Promise<ServiceResponse<{ albums: Album[] }>> => {
       const url = `${ BASE_URL }/albums`;
