@@ -32,6 +32,9 @@ export const defaultContextSettings = (): ContextSettings => {
 
 export const PhotoAlbumContext = createContext(defaultContextSettings());
 
+// TODO: revisit
+// Consider and explore abstractions that would clean this area up and
+// reduce the inline logic. This will not scale with an actual project.
 export const PhotoAlbumProvider = ({ children }) => {
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ errors, setErrors ] = useState<[]>([]);
